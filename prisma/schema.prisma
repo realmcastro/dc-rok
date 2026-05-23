@@ -1,0 +1,124 @@
+// dc-rok — Phase 1 schema.
+// Rules: see .claude/rules/database-rules.md and ADR-0013 for audit append-only at role level.
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------- Enums ----------
+
+enum AccountStatus {
+  ACTIVE
+  SUSPENDED
+  UNLINKED
+}
+
+enum LicenseStatus {
+  ACTIVE
+  REVOKED
+  EXPIRED
+}
+
+enum SessionState {
+  IDLE
+  ACTIVE
+  STOPPED
+}
+
+// ---------- Tables ----------
+
+/// Internal account managed by the bot.
+/// `discord_user_id` is the link to the Discord identity; null until /init.
+model Account {
+  id                  String          @id @db.VarChar(26) // ULID
+  externalAccountName String          @map("external_account_name") @db.Text
+  discordUserId       String?         @unique @map("discord_user_id") @db.Text
+  status              AccountStatus   @default(UNLINKED)
+  createdAt           DateTime        @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt           DateTime        @updatedAt @map("updated_at") @db.Timestamptz
+
+  sessions            AutomationSession[]
+  redeemedCodes       ActivationCode[]
+
+  @@index([status])
+  @@map("accounts")
+}
+
+/// License (subscription) granted to one or more accounts.
+/// `keyHash` stores the hashed license key (ADR-0011 / TD-0002).
+model License {
+  id                 String           @id @db.VarChar(26)
+  keyHash            String           @unique @map("key_hash") @db.Text
+  status             LicenseStatus    @default(ACTIVE)
+  expiresAt          DateTime         @map("expires_at") @db.Timestamptz
+  maxActivations     Int              @map("max_activations") @db.Integer
+  currentActivations Int              @default(0) @map("current_activations") @db.Integer
+  createdBy          String           @map("created_by") @db.Text  // Discord user id of admin issuer
+  createdAt          DateTime         @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt          DateTime         @updatedAt @map("updated_at") @db.Timestamptz
+
+  activationCodes    ActivationCode[]
+
+  @@index([status, expiresAt])
+  @@map("licenses")
+}
+
+/// One-shot redeemable code bound to a License.
+model ActivationCode {
+  id                   String    @id @db.VarChar(26)
+  codeHash             String    @unique @map("code_hash") @db.Text
+  licenseId            String    @map("license_id") @db.VarChar(26)
+  redeemedAt           DateTime? @map("redeemed_at") @db.Timestamptz
+  redeemedByAccountId  String?   @map("redeemed_by_account_id") @db.VarChar(26)
+  createdAt            DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt            DateTime  @updatedAt @map("updated_at") @db.Timestamptz
+
+  license              License   @relation(fields: [licenseId], references: [id], onDelete: Restrict)
+  redeemedByAccount    Account?  @relation(fields: [redeemedByAccountId], references: [id], onDelete: SetNull)
+
+  @@index([licenseId])
+  @@index([redeemedAt])
+  @@map("activation_codes")
+}
+
+/// Session intent state machine. Phase 1 does not run real automation;
+/// state changes are persisted so Phase 2 agents can pick them up.
+model AutomationSession {
+  id        String       @id @db.VarChar(26)
+  accountId String       @map("account_id") @db.VarChar(26)
+  state     SessionState @default(IDLE)
+  startedAt DateTime?    @map("started_at") @db.Timestamptz
+  stoppedAt DateTime?    @map("stopped_at") @db.Timestamptz
+  createdAt DateTime     @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime     @updatedAt @map("updated_at") @db.Timestamptz
+
+  account   Account      @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@unique([accountId])
+  @@index([state])
+  @@map("automation_sessions")
+}
+
+/// Append-only audit log. ADR-0013: UPDATE/DELETE revoked from app role at DB level.
+model AuditLog {
+  id            String   @id @db.VarChar(26)
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz
+  actor         String   @db.Text // Discord user id, or "system"
+  action        String   @db.Text
+  targetType    String   @map("target_type") @db.Text
+  targetId      String   @map("target_id") @db.Text
+  correlationId String   @map("correlation_id") @db.Text
+  payload       Json     @db.JsonB
+
+  @@index([actor, createdAt])
+  @@index([action, createdAt])
+  @@index([targetType, targetId])
+  @@index([correlationId])
+  @@map("audit_logs")
+}

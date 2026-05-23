@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings",
+  "_comment": "EXAMPLE — copy to .claude/settings.json (and review!) to enable agent auto-switching. The hook commands are read-only routers: they only inject context, they do not modify files or run other tools. Permissions block is INTENTIONALLY MINIMAL — review and widen yourself, never copy permissions blindly.",
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .claude/hooks/inject-agents.mjs",
+            "description": "Match the prompt + recent git diff against .claude/routing/agent-router.md and inject a <system-reminder> listing activated agents."
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .claude/hooks/check-paths.mjs",
+            "description": "Match the target file path against path triggers in .claude/routing/agent-router.md and inject a reminder if a specialist agent owns that path."
+          }
+        ]
+      }
+    ]
+  }
+}

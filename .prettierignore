@@ -1,0 +1,7 @@
+dist/
+build/
+coverage/
+node_modules/
+src/__generated__/
+prisma/migrations/
+*.md
