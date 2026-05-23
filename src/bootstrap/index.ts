@@ -9,13 +9,16 @@
  * No business logic here. Everything else in src/ depends on injected deps.
  */
 
+import { ConfigError, loadConfig } from '../config/index.js';
 import { makeInitCommand } from '../discord/commands/init/init.handler.js';
+import { makeResetCommand } from '../discord/commands/reset/reset.handler.js';
 import { makeStartCommand } from '../discord/commands/start/start.handler.js';
+import { makeStatusCommand } from '../discord/commands/status/status.handler.js';
 import { makeStopCommand } from '../discord/commands/stop/stop.handler.js';
 import { startBot } from '../discord/runtime/client.js';
 import type { SlashCommand } from '../discord/runtime/slash-handler.js';
-import { ConfigError, loadConfig } from '../config/index.js';
 import { createPinoLogger } from '../shared/index.js';
+
 import { buildContainer } from './container.js';
 import { createPrismaClient } from './prisma.js';
 
@@ -49,9 +52,17 @@ async function main(): Promise<void> {
 
   const commands: SlashCommand[] = [
     makeInitCommand({ linkAccount: container.useCases.linkAccount }),
+    makeResetCommand({
+      lookupAccount: container.useCases.lookupAccount,
+      resetAccount: container.useCases.resetAccount,
+    }),
     makeStartCommand({
       lookupAccount: container.useCases.lookupAccount,
       startSession: container.useCases.startSession,
+    }),
+    makeStatusCommand({
+      lookupAccount: container.useCases.lookupAccount,
+      getSessionStatus: container.useCases.getSessionStatus,
     }),
     makeStopCommand({
       lookupAccount: container.useCases.lookupAccount,

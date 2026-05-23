@@ -14,17 +14,19 @@ export {
 } from './domain/errors.js';
 
 export type { LinkOutcome } from './application/dto/link-outcome.js';
+export type { ResetOutcome } from './application/dto/reset-outcome.js';
 
 export type { AccountRepository } from './application/ports/account-repository.js';
-export type {
-  LinkTxContext,
-  LinkUnitOfWork,
-} from './application/ports/link-unit-of-work.js';
+export type { LinkTxContext, LinkUnitOfWork } from './application/ports/link-unit-of-work.js';
+export type { ResetTxContext, ResetUnitOfWork } from './application/ports/reset-unit-of-work.js';
 
 export { LinkAccount, type LinkAccountInput } from './application/use-cases/link-account.js';
 export { LookupAccountByDiscordUser } from './application/use-cases/lookup-account-by-discord-user.js';
+export { ResetAccount, type ResetAccountInput } from './application/use-cases/reset-account.js';
 
 export { PrismaAccountRepository } from './infrastructure/prisma-account-repository.js';
 export { PrismaLinkUnitOfWork } from './infrastructure/prisma-link-unit-of-work.js';
+export { PrismaResetUnitOfWork } from './infrastructure/prisma-reset-unit-of-work.js';
 export { InMemoryAccountRepository } from './infrastructure/in-memory-account-repository.js';
 export { InMemoryLinkUnitOfWork } from './infrastructure/in-memory-link-unit-of-work.js';
+export { InMemoryResetUnitOfWork } from './infrastructure/in-memory-reset-unit-of-work.js';

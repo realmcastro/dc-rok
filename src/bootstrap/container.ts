@@ -5,6 +5,8 @@ import {
   LookupAccountByDiscordUser,
   PrismaAccountRepository,
   PrismaLinkUnitOfWork,
+  PrismaResetUnitOfWork,
+  ResetAccount,
 } from '../account-link/index.js';
 import type { Env } from '../config/index.js';
 import {
@@ -48,6 +50,7 @@ export interface Container {
     readonly redeemActivationCode: RedeemActivationCode;
     readonly linkAccount: LinkAccount;
     readonly lookupAccount: LookupAccountByDiscordUser;
+    readonly resetAccount: ResetAccount;
     readonly startSession: StartSession;
     readonly stopSession: StopSession;
     readonly getSessionStatus: GetSessionStatus;
@@ -75,6 +78,7 @@ export function buildContainer(input: BuildContainerInput): Container {
   const activationCodeRepo = new PrismaActivationCodeRepository(input.prisma);
   const licenseUow = new PrismaLicenseUnitOfWork(input.prisma);
   const linkUow = new PrismaLinkUnitOfWork(input.prisma, ids, clock);
+  const resetUow = new PrismaResetUnitOfWork(input.prisma, ids, clock);
   const sessionUow = new PrismaSessionUnitOfWork(input.prisma, ids, clock);
 
   const accountRepo = new PrismaAccountRepository(input.prisma);
@@ -108,6 +112,12 @@ export function buildContainer(input: BuildContainerInput): Container {
     log,
   });
   const lookupAccount = new LookupAccountByDiscordUser(accountRepo);
+  const resetAccount = new ResetAccount({
+    uow: resetUow,
+    agentRuntime,
+    clock,
+    log,
+  });
 
   const startSession = new StartSession({
     uow: sessionUow,
@@ -142,6 +152,7 @@ export function buildContainer(input: BuildContainerInput): Container {
       redeemActivationCode,
       linkAccount,
       lookupAccount,
+      resetAccount,
       startSession,
       stopSession,
       getSessionStatus,

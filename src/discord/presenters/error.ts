@@ -1,7 +1,5 @@
-import {
-  isAppError,
-  type CorrelationId,
-} from '../../shared/index.js';
+import { isAppError, type CorrelationId } from '../../shared/index.js';
+
 import { buildEmbed } from './embed.js';
 
 interface UserFacingError {
@@ -40,10 +38,13 @@ function describe(err: unknown): UserFacingError {
       case 'DISCORD_USER_ALREADY_LINKED':
         return {
           title: 'Already linked',
-          description: 'Your Discord account is already linked. Use `/reset` first if you want to relink.',
+          description:
+            'Your Discord account is already linked. Use `/reset` first if you want to relink.',
         };
       case 'ACCOUNT_NOT_FOUND':
         return { title: 'Account not found', description: 'Run `/init` to set up your account.' };
+      case 'ACCOUNT_SUSPENDED':
+        return { title: 'Account suspended', description: 'Contact an admin for details.' };
       case 'NO_LICENSE_FOR_ACCOUNT':
         return {
           title: 'No active license',
@@ -60,7 +61,10 @@ function describe(err: unknown): UserFacingError {
           description: 'The session is not in a state that allows this action.',
         };
       case 'PERMISSION_DENIED':
-        return { title: 'Permission denied', description: 'You do not have access to this command.' };
+        return {
+          title: 'Permission denied',
+          description: 'You do not have access to this command.',
+        };
       case 'RATE_LIMITED':
         return { title: 'Slow down', description: 'Try again in a minute.' };
       default:
