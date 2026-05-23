@@ -1,9 +1,6 @@
-import type {
-  LicenseValidationResult,
-  LicenseValidator,
-} from '../ports/license-validator.js';
 import type { ActivationCodeRepository } from '../ports/activation-code-repository.js';
 import type { LicenseRepository } from '../ports/license-repository.js';
+import type { LicenseValidationResult, LicenseValidator } from '../ports/license-validator.js';
 
 /**
  * Default implementation of `LicenseValidator`.

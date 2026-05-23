@@ -59,8 +59,10 @@ export function makeResetCommand(deps: ResetCommandDeps): SlashCommand {
       });
 
       // Await button click
+      const message = response.resource?.message;
+      if (!message) return;
       try {
-        const confirmation = await response.resource.message.awaitMessageComponent({
+        const confirmation = await message.awaitMessageComponent({
           componentType: ComponentType.Button,
           filter: (i) => i.user.id === interaction.user.id,
           time: CONFIRMATION_TIMEOUT_MS,

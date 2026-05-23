@@ -1,15 +1,13 @@
 import type { PrismaClient } from '@prisma/client';
 
 import { PrismaAuditWriter } from '../../audit/index.js';
-import {
-  PrismaActivationCodeRepository,
-  PrismaLicenseRepository,
-} from '../../license/index.js';
+import { PrismaActivationCodeRepository, PrismaLicenseRepository } from '../../license/index.js';
 import type { Clock, IdGenerator } from '../../shared/index.js';
 import type {
   SessionTxContext,
   SessionUnitOfWork,
 } from '../application/ports/session-unit-of-work.js';
+
 import { PrismaSessionRepository } from './prisma-session-repository.js';
 
 export class PrismaSessionUnitOfWork implements SessionUnitOfWork {

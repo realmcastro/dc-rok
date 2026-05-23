@@ -2,6 +2,7 @@ import type { ChatInputCommandInteraction } from 'discord.js';
 import { describe, expect, it } from 'vitest';
 
 import { InvalidInputError } from '../../../shared/index.js';
+
 import { parseInitInteraction } from './init.parser.js';
 
 function makeInteraction(opts: {
@@ -39,16 +40,14 @@ describe('parseInitInteraction', () => {
   });
 
   it('trims surrounding whitespace from the code', () => {
-    const input = parseInitInteraction(
-      makeInteraction({ code: '  ABCDE  ', username: 'alice' }),
-    );
+    const input = parseInitInteraction(makeInteraction({ code: '  ABCDE  ', username: 'alice' }));
     expect(input.code).toBe('ABCDE');
   });
 
   it('rejects empty code', () => {
-    expect(() =>
-      parseInitInteraction(makeInteraction({ code: '   ', username: 'alice' })),
-    ).toThrow(InvalidInputError);
+    expect(() => parseInitInteraction(makeInteraction({ code: '   ', username: 'alice' }))).toThrow(
+      InvalidInputError,
+    );
   });
 
   it('rejects an oversized code', () => {

@@ -16,7 +16,7 @@ export function presentInitSuccess(
     fields: [
       {
         name: 'License expires',
-        value: `<t:${Math.floor(outcome.licenseExpiresAt.getTime() / 1000)}:R>`,
+        value: `<t:${String(Math.floor(outcome.licenseExpiresAt.getTime() / 1000))}:R>`,
         inline: true,
       },
       {

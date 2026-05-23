@@ -1,10 +1,11 @@
-import { SlashCommandBuilder } from 'discord.js';
+import { InteractionContextType, SlashCommandBuilder } from 'discord.js';
 
 import type { LinkAccount } from '../../../account-link/index.js';
 import { newCorrelationId } from '../../../shared/index.js';
 import { buildErrorEmbed } from '../../presenters/error.js';
 import { ephemeralReply } from '../../runtime/reply.js';
 import type { SlashCommand, SlashHandler } from '../../runtime/slash-handler.js';
+
 import { parseInitInteraction } from './init.parser.js';
 import { presentInitSuccess } from './init.presenter.js';
 
@@ -19,7 +20,7 @@ export function makeInitCommand(deps: InitCommandDeps): SlashCommand {
     .addStringOption((opt) =>
       opt.setName('code').setDescription('Your activation code').setRequired(true),
     )
-    .setDMPermission(false);
+    .setContexts(InteractionContextType.Guild);
 
   const handler: SlashHandler = async (interaction, ctx) => {
     const correlationId = newCorrelationId();

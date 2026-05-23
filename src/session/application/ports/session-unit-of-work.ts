@@ -1,8 +1,6 @@
 import type { AuditWriter } from '../../../audit/index.js';
-import type {
-  ActivationCodeRepository,
-  LicenseRepository,
-} from '../../../license/index.js';
+import type { ActivationCodeRepository, LicenseRepository } from '../../../license/index.js';
+
 import type { SessionRepository } from './session-repository.js';
 
 /**

@@ -11,14 +11,14 @@ export function presentStartSuccess(
   const expiresField = outcome.licenseExpiresAt
     ? {
         name: 'License expires',
-        value: `<t:${Math.floor(outcome.licenseExpiresAt.getTime() / 1000)}:R>`,
+        value: `<t:${String(Math.floor(outcome.licenseExpiresAt.getTime() / 1000))}:R>`,
         inline: true,
       }
     : undefined;
   const startedField = outcome.startedAt
     ? {
         name: 'Started',
-        value: `<t:${Math.floor(outcome.startedAt.getTime() / 1000)}:R>`,
+        value: `<t:${String(Math.floor(outcome.startedAt.getTime() / 1000))}:R>`,
         inline: true,
       }
     : undefined;

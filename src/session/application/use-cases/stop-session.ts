@@ -1,13 +1,9 @@
-import type {
-  Clock,
-  CorrelationId,
-  Logger,
-} from '../../../shared/index.js';
+import type { LicenseValidator } from '../../../license/index.js';
+import type { Clock, CorrelationId, Logger } from '../../../shared/index.js';
 import { SessionNotFoundError } from '../../domain/errors.js';
+import type { SessionStateOutcome } from '../dto/session-outcome.js';
 import type { AgentRuntimePort } from '../ports/agent-runtime-port.js';
 import type { SessionUnitOfWork } from '../ports/session-unit-of-work.js';
-import type { SessionStateOutcome } from '../dto/session-outcome.js';
-import type { LicenseValidator } from '../../../license/index.js';
 
 export interface StopSessionInput {
   readonly accountId: string;

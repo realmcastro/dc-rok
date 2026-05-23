@@ -1,6 +1,6 @@
+import type { AccountRepository } from '../application/ports/account-repository.js';
 import type { AccountId, DiscordUserId } from '../domain/account-id.js';
 import type { Account } from '../domain/account.js';
-import type { AccountRepository } from '../application/ports/account-repository.js';
 
 export class InMemoryAccountRepository implements AccountRepository {
   private readonly byId = new Map<string, Account>();

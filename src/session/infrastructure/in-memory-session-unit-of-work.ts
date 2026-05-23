@@ -1,13 +1,10 @@
 import type { AuditWriter } from '../../audit/index.js';
-import type {
-  ActivationCodeRepository,
-  LicenseRepository,
-} from '../../license/index.js';
+import type { ActivationCodeRepository, LicenseRepository } from '../../license/index.js';
+import type { SessionRepository } from '../application/ports/session-repository.js';
 import type {
   SessionTxContext,
   SessionUnitOfWork,
 } from '../application/ports/session-unit-of-work.js';
-import type { SessionRepository } from '../application/ports/session-repository.js';
 
 export class InMemorySessionUnitOfWork implements SessionUnitOfWork {
   constructor(

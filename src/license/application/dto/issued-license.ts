@@ -8,11 +8,11 @@ export interface IssuedLicense {
   readonly licenseId: LicenseId;
   readonly expiresAt: Date;
   readonly maxActivations: number;
-  readonly activationCodes: ReadonlyArray<{
+  readonly activationCodes: readonly {
     readonly id: ActivationCodeId;
     /** Plaintext, return-once. Never logged, never stored. */
     readonly code: string;
-  }>;
+  }[];
 }
 
 export interface RedeemedActivationOutcome {

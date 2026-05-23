@@ -22,7 +22,6 @@
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
 
-    "rootDir": "src",
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {

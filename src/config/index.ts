@@ -34,6 +34,6 @@ export function loadConfig(source: NodeJS.ProcessEnv = process.env): Env {
 /**
  * Reset the cached config. Tests only.
  */
-export function __resetConfigCacheForTests(): void {
+export function resetConfigCacheForTests(): void {
   cached = null;
 }

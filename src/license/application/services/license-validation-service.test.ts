@@ -1,10 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import {
-  FixedClock,
-  SequenceIdGenerator,
-  type Logger,
-} from '../../../shared/index.js';
+import { FixedClock, SequenceIdGenerator, type Logger } from '../../../shared/index.js';
 import { HmacLicenseHasher } from '../../infrastructure/hmac-license-hasher.js';
 import { InMemoryActivationCodeRepository } from '../../infrastructure/in-memory/in-memory-activation-code-repository.js';
 import { InMemoryLicenseRepository } from '../../infrastructure/in-memory/in-memory-license-repository.js';
@@ -13,6 +9,7 @@ import { RandomActivationCodeFactory } from '../../infrastructure/random-activat
 import { IssueLicense } from '../use-cases/issue-license.js';
 import { RedeemActivationCode } from '../use-cases/redeem-activation-code.js';
 import { RevokeLicense } from '../use-cases/revoke-license.js';
+
 import { LicenseValidationService } from './license-validation-service.js';
 
 const NOW = new Date('2026-05-23T12:00:00Z');

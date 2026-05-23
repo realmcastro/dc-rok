@@ -1,8 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import {
-  DiscordUserAlreadyLinkedError,
-} from '../../account-link/index.js';
+import { DiscordUserAlreadyLinkedError } from '../../account-link/index.js';
 import {
   ActivationCodeAlreadyRedeemedError,
   ActivationCodeNotFoundError,
@@ -10,6 +8,7 @@ import {
   LicenseExpiredError,
 } from '../../license/index.js';
 import { asCorrelationId, InvalidInputError } from '../../shared/index.js';
+
 import { buildErrorEmbed } from './error.js';
 
 const CORR = asCorrelationId('01CORR000000000000000000AA');

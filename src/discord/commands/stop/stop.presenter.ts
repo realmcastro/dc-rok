@@ -11,7 +11,7 @@ export function presentStopSuccess(
   const stoppedField = outcome.stoppedAt
     ? {
         name: 'Stopped',
-        value: `<t:${Math.floor(outcome.stoppedAt.getTime() / 1000)}:R>`,
+        value: `<t:${String(Math.floor(outcome.stoppedAt.getTime() / 1000))}:R>`,
         inline: true,
       }
     : undefined;

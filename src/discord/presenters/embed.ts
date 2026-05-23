@@ -16,7 +16,7 @@ export interface EmbedOptions {
   readonly kind: EmbedKind;
   readonly title: string;
   readonly description?: string;
-  readonly fields?: ReadonlyArray<{ name: string; value: string; inline?: boolean }>;
+  readonly fields?: readonly { name: string; value: string; inline?: boolean }[];
   readonly correlationId: CorrelationId;
 }
 

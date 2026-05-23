@@ -1,5 +1,6 @@
 import type { Prisma, PrismaClient } from '@prisma/client';
 
+import type { AccountRepository } from '../application/ports/account-repository.js';
 import {
   asAccountId,
   parseDiscordUserId,
@@ -7,7 +8,6 @@ import {
   type DiscordUserId,
 } from '../domain/account-id.js';
 import { Account, type AccountSnapshot, type AccountStatus } from '../domain/account.js';
-import type { AccountRepository } from '../application/ports/account-repository.js';
 
 type PrismaAccountClient = PrismaClient | Prisma.TransactionClient;
 

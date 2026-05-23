@@ -43,11 +43,11 @@ export class InvalidInputError extends DomainError {
 }
 
 export class NotFoundError extends DomainError {
-  readonly code = 'NOT_FOUND';
+  readonly code: string = 'NOT_FOUND';
 }
 
 export class ConflictError extends DomainError {
-  readonly code = 'CONFLICT';
+  readonly code: string = 'CONFLICT';
 }
 
 export class PermissionDeniedError extends DomainError {

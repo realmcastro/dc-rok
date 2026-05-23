@@ -1,6 +1,7 @@
 import type { PrismaClient } from '@prisma/client';
 
 import type { LicenseTxContext, LicenseUnitOfWork } from '../application/ports/unit-of-work.js';
+
 import { PrismaActivationCodeRepository } from './prisma-activation-code-repository.js';
 import { PrismaLicenseRepository } from './prisma-license-repository.js';
 

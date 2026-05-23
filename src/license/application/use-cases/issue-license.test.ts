@@ -10,6 +10,7 @@ import { HmacLicenseHasher } from '../../infrastructure/hmac-license-hasher.js';
 import { InMemoryActivationCodeRepository } from '../../infrastructure/in-memory/in-memory-activation-code-repository.js';
 import { InMemoryLicenseRepository } from '../../infrastructure/in-memory/in-memory-license-repository.js';
 import { RandomActivationCodeFactory } from '../../infrastructure/random-activation-code-factory.js';
+
 import { IssueLicense } from './issue-license.js';
 
 const NOW = new Date('2026-05-23T12:00:00Z');

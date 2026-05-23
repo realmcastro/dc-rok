@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from 'discord.js';
+import { InteractionContextType, SlashCommandBuilder } from 'discord.js';
 
 import {
   AccountNotFoundError,
@@ -9,6 +9,7 @@ import { newCorrelationId } from '../../../shared/index.js';
 import { buildErrorEmbed } from '../../presenters/error.js';
 import { ephemeralReply } from '../../runtime/reply.js';
 import type { SlashCommand, SlashHandler } from '../../runtime/slash-handler.js';
+
 import { parseStopInteraction } from './stop.parser.js';
 import { presentStopSuccess } from './stop.presenter.js';
 
@@ -21,7 +22,7 @@ export function makeStopCommand(deps: StopCommandDeps): SlashCommand {
   const builder = new SlashCommandBuilder()
     .setName('stop')
     .setDescription('Stop your automation session')
-    .setDMPermission(false);
+    .setContexts(InteractionContextType.Guild);
 
   const handler: SlashHandler = async (interaction, ctx) => {
     const correlationId = newCorrelationId();

@@ -22,6 +22,7 @@ import {
 import { DiscordUserAlreadyLinkedError } from '../../domain/errors.js';
 import { InMemoryAccountRepository } from '../../infrastructure/in-memory-account-repository.js';
 import { InMemoryLinkUnitOfWork } from '../../infrastructure/in-memory-link-unit-of-work.js';
+
 import { LinkAccount } from './link-account.js';
 
 const NOW = new Date('2026-05-23T12:00:00Z');

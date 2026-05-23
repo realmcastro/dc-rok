@@ -21,6 +21,7 @@ import { InMemoryActivationCodeRepository } from '../../infrastructure/in-memory
 import { InMemoryLicenseRepository } from '../../infrastructure/in-memory/in-memory-license-repository.js';
 import { InMemoryLicenseUnitOfWork } from '../../infrastructure/in-memory/in-memory-unit-of-work.js';
 import { RandomActivationCodeFactory } from '../../infrastructure/random-activation-code-factory.js';
+
 import { IssueLicense } from './issue-license.js';
 import { RedeemActivationCode } from './redeem-activation-code.js';
 import { RevokeLicense } from './revoke-license.js';

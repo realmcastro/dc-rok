@@ -1,12 +1,12 @@
 import type { Prisma, PrismaClient } from '@prisma/client';
 
+import type { SessionRepository } from '../application/ports/session-repository.js';
 import {
   AutomationSession,
   type AutomationSessionSnapshot,
   type SessionState,
 } from '../domain/automation-session.js';
 import { asSessionId, type SessionId } from '../domain/session-id.js';
-import type { SessionRepository } from '../application/ports/session-repository.js';
 
 type PrismaSessionClient = PrismaClient | Prisma.TransactionClient;
 

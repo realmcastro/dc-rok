@@ -14,29 +14,7 @@ export default defineConfig({
     clearMocks: true,
     restoreMocks: true,
     pool: 'threads',
-    projects: [
-      {
-        extends: true,
-        test: {
-          name: 'unit',
-          include: ['src/**/*.test.ts'],
-          exclude: ['src/**/*.int.test.ts', 'src/**/*.e2e.test.ts'],
-        },
-      },
-      {
-        extends: true,
-        test: {
-          name: 'integration',
-          include: ['src/**/*.int.test.ts'],
-        },
-      },
-      {
-        extends: true,
-        test: {
-          name: 'e2e',
-          include: ['tests/e2e/**/*.e2e.test.ts'],
-        },
-      },
-    ],
+    include: ['src/**/*.test.ts'],
+    exclude: ['src/**/*.int.test.ts', 'src/**/*.e2e.test.ts'],
   },
 });

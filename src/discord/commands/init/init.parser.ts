@@ -23,8 +23,7 @@ export function parseInitInteraction(interaction: ChatInputCommandInteraction): 
 
   // External account name defaults to the Discord user's display name (or
   // username). Phase 2 will support an admin command to rename.
-  const externalAccountName =
-    interaction.member?.user.username ?? interaction.user.username ?? interaction.user.id;
+  const externalAccountName = interaction.member?.user.username ?? interaction.user.username;
 
   return {
     code: result.data.code,

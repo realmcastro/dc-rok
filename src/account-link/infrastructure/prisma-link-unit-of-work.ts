@@ -1,12 +1,10 @@
 import type { PrismaClient } from '@prisma/client';
 
 import { PrismaAuditWriter } from '../../audit/index.js';
-import {
-  PrismaActivationCodeRepository,
-  PrismaLicenseRepository,
-} from '../../license/index.js';
+import { PrismaActivationCodeRepository, PrismaLicenseRepository } from '../../license/index.js';
 import type { Clock, IdGenerator } from '../../shared/index.js';
 import type { LinkTxContext, LinkUnitOfWork } from '../application/ports/link-unit-of-work.js';
+
 import { PrismaAccountRepository } from './prisma-account-repository.js';
 
 /**

@@ -8,6 +8,7 @@ import {
 } from 'discord.js';
 
 import type { Logger } from '../../shared/index.js';
+
 import type { SlashCommand } from './slash-handler.js';
 
 export interface DiscordClientConfig {
@@ -18,7 +19,7 @@ export interface DiscordClientConfig {
 
 export interface BotDeps {
   readonly config: DiscordClientConfig;
-  readonly commands: ReadonlyArray<SlashCommand>;
+  readonly commands: readonly SlashCommand[];
   readonly log: Logger;
 }
 
@@ -33,7 +34,7 @@ export function createDiscordClient(): Client {
 
 export async function registerSlashCommands(
   config: DiscordClientConfig,
-  commands: ReadonlyArray<SlashCommand>,
+  commands: readonly SlashCommand[],
   log: Logger,
 ): Promise<void> {
   const rest = new REST({ version: '10' }).setToken(config.token);
@@ -58,7 +59,7 @@ export async function registerSlashCommands(
 
 export function attachInteractionHandler(
   client: Client,
-  commands: ReadonlyArray<SlashCommand>,
+  commands: readonly SlashCommand[],
   log: Logger,
 ): void {
   const byName = new Map(commands.map((c) => [c.builder.name, c]));
@@ -71,7 +72,10 @@ export function attachInteractionHandler(
       return;
     }
     void command.handler(interaction, { log }).catch((err: unknown) => {
-      log.error({ op: 'discord.dispatch', commandName: interaction.commandName, err }, 'handler threw');
+      log.error(
+        { op: 'discord.dispatch', commandName: interaction.commandName, err },
+        'handler threw',
+      );
     });
   });
 }

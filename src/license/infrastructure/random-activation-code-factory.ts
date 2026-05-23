@@ -15,7 +15,7 @@ export class RandomActivationCodeFactory implements ActivationCodeFactory {
     let out = '';
     for (let i = 0; i < CODE_LENGTH; i += 1) {
       const byte = bytes[i] ?? 0;
-      out += ALPHABET[byte % ALPHABET.length];
+      out += ALPHABET[byte % ALPHABET.length] ?? 'A';
     }
     // Format as 5-char groups for readability: XXXXX-XXXXX-XXXXX-XXXXX
     return `${out.slice(0, 5)}-${out.slice(5, 10)}-${out.slice(10, 15)}-${out.slice(15, 20)}`;
