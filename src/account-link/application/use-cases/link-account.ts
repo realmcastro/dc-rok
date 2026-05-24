@@ -59,14 +59,15 @@ export class LinkAccount {
         now: this.deps.clock.now(),
       });
 
-      // 3. Redeem the activation code in the same transaction.
+      // 3. Persist the account FIRST so the activation_codes.redeemed_by_account_id
+      //    FK has a target row when redemption updates the code.
+      await tx.accounts.save(account);
+
+      // 4. Redeem the activation code in the same transaction.
       const redemption = await this.deps.redeemInContext.run(
         { licenses: tx.licenses, codes: tx.codes },
         { code, accountId: account.id },
       );
-
-      // 4. Persist the account.
-      await tx.accounts.save(account);
 
       // 5. Audit. Payload deliberately omits the plaintext code.
       await tx.audit.record({

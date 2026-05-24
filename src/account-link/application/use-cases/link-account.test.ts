@@ -100,6 +100,41 @@ describe('LinkAccount', () => {
     );
   });
 
+  it('persists the account BEFORE saving the redeemed activation code (FK ordering)', async () => {
+    // Regression: PrismaActivationCodeRepository.save() sets
+    // redeemed_by_account_id, which has a FK to accounts(id). If the code is
+    // saved before the account row exists, Postgres throws P2003. The pure
+    // in-memory repos don't enforce FKs, so we assert call order directly.
+    const { accounts, codes, issue, linkAccount } = build();
+    const issued = await issue.run({
+      issuerDiscordUserId: '111111111111111111',
+      expiresAt: FUTURE,
+      maxActivations: 2,
+      codesToGenerate: 1,
+    });
+
+    const order: string[] = [];
+    const accountSave = vi.spyOn(accounts, 'save').mockImplementation(async (a) => {
+      order.push('account.save');
+      await InMemoryAccountRepository.prototype.save.call(accounts, a);
+    });
+    const codeSave = vi.spyOn(codes, 'save').mockImplementation(async (c) => {
+      order.push('code.save');
+      await InMemoryActivationCodeRepository.prototype.save.call(codes, c);
+    });
+
+    await linkAccount.run({
+      code: issued.activationCodes[0]!.code,
+      discordUserId: '777777777777777777',
+      externalAccountName: 'farm-01',
+      correlationId: CORR,
+    });
+
+    expect(accountSave).toHaveBeenCalled();
+    expect(codeSave).toHaveBeenCalled();
+    expect(order.indexOf('account.save')).toBeLessThan(order.indexOf('code.save'));
+  });
+
   it('rejects when the Discord user is already linked', async () => {
     const { issue, linkAccount } = build();
     const issued = await issue.run({
