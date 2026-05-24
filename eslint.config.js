@@ -6,7 +6,17 @@ import globals from 'globals';
 
 export default tseslint.config(
   {
-    ignores: ['dist/**', 'build/**', 'coverage/**', 'node_modules/**', 'src/__generated__/**'],
+    ignores: [
+      'dist/**',
+      'build/**',
+      'coverage/**',
+      'node_modules/**',
+      'src/__generated__/**',
+      // External workspaces with their own toolchains.
+      'desktop/**',
+      'scripts/**',
+      'eslint.config.js',
+    ],
   },
   js.configs.recommended,
   ...tseslint.configs.strictTypeChecked,
