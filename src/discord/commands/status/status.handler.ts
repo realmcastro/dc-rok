@@ -1,4 +1,4 @@
-import { InteractionContextType, SlashCommandBuilder } from 'discord.js';
+import { InteractionContextType, MessageFlags, SlashCommandBuilder } from 'discord.js';
 
 import {
   AccountNotFoundError,
@@ -29,6 +29,7 @@ export function makeStatusCommand(deps: StatusCommandDeps): SlashCommand {
     const log = ctx.log.child({ op: 'discord.status', correlationId });
 
     try {
+      await interaction.deferReply({ flags: MessageFlags.Ephemeral });
       const input = parseStatusInteraction(interaction);
       const account = await deps.lookupAccount.run(input.discordUserId);
       if (!account) {

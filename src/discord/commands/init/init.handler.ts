@@ -1,4 +1,4 @@
-import { InteractionContextType, SlashCommandBuilder } from 'discord.js';
+import { InteractionContextType, MessageFlags, SlashCommandBuilder } from 'discord.js';
 
 import type { LinkAccount } from '../../../account-link/index.js';
 import { newCorrelationId } from '../../../shared/index.js';
@@ -27,6 +27,9 @@ export function makeInitCommand(deps: InitCommandDeps): SlashCommand {
     const log = ctx.log.child({ op: 'discord.init', correlationId });
 
     try {
+      // Defer immediately so we have up to 15 minutes to finish, instead of 3s.
+      // Required by discord-rules.md for any handler touching DB / external IO.
+      await interaction.deferReply({ flags: MessageFlags.Ephemeral });
       const input = parseInitInteraction(interaction);
       const outcome = await deps.linkAccount.run({
         code: input.code,
